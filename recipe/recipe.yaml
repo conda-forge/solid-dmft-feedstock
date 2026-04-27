@@ -1,0 +1,63 @@
+schema_version: 1
+
+context:
+  name: solid-dmft
+  version: "3.3.5"
+  python_min: "3.11"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/solid_dmft-${{ version }}.tar.gz
+  sha256: 21583720352f1df4a4abbd446c11c387fc223f6ab6b9f1276cfdfb6264c90931
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  python:
+    entry_points:
+      - solid_dmft = solid_dmft.main:main
+
+requirements:
+  host:
+    - python 3.11.*
+    - setuptools
+    - pip
+  run:
+    - python >=${{ python_min }}
+    - numpy
+    - scipy
+    - scikit-image
+    - triqs
+    - triqs_cthyb
+    - triqs_dft_tools
+
+tests:
+  - python:
+      imports:
+        - solid_dmft
+      pip_check: true
+      python_version: ${{ python_min }}
+  - files:
+      recipe:
+        - dmft_config.toml
+        - inp.h5
+    requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+    script:
+      - OMPI_COMM_WORLD_RANK=4 solid_dmft
+
+about:
+  summary: "solid_dmft: a versatile python wrapper to perform DFT+DMFT calculations utilizing the TRIQS software library"
+  license: MIT
+  license_file: LICENSE.txt
+  homepage: https://triqs.github.io/solid_dmft/index.html
+
+extra:
+  recipe-maintainers:
+    - jan-janssen
