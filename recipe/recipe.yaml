@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: solid-dmft
-  version: "3.3.5"
+  version: "4.0.0"
   python_min: "3.11"
 
 package:
@@ -11,10 +11,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/solid_dmft-${{ version }}.tar.gz
-  sha256: 21583720352f1df4a4abbd446c11c387fc223f6ab6b9f1276cfdfb6264c90931
+  sha256: 978091bbeac31b99b1389368a5311b4f1f15c3fc983f6df4d9ba6baa0d12db2c
 
 build:
-  number: 1
+  number: 0
   noarch: python
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   python:
